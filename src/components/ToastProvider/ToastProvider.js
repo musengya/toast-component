@@ -3,6 +3,17 @@ export const ToastContext = React.createContext();
 
 function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
+  React.useEffect(() => {
+    function handleKeyUp(event) {
+      if (event.key === 'Escape') {
+        setToasts([]);
+      }
+    }
+    document.addEventListener('keyup', handleKeyUp);
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [setToasts]);
   const handleOpenToast = (message, variant) => {
     setToasts([
       ...toasts,
